@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="Enhanced-Syntax-Highlighting.b2a6aeb0-4b5e-4e41-a70e-015382bd7d45" Version="0.1" Language="en-US" Publisher="Stanislav Kuzmich (Art.Stea1th)" />
+        <DisplayName>Enhanced Syntax Highlighting</DisplayName>
+        <Description xml:space="preserve">This is an classifier extension for Visual Studio editor based on the Roslyn APIs to enhanced highlighting custom tags in C# code to make them easily recognizable.</Description>
+        <MoreInfo>https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting</MoreInfo>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0]" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+</PackageManifest>
