@@ -3,13 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASD.ESH", "ASD.ESH\ASD.ESH.csproj", "{4B2BDAD4-BB57-40FB-B8F7-CD8FE20E184B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A477FCD9-1FAC-4BFC-B795-7DDDBA3F857D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{55825433-8076-45FA-81A7-7689FE7964B8}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\.gitignore = ..\.gitignore
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASD.ESH", "ASD.ESH\ASD.ESH.csproj", "{3963E726-6E51-40E6-992E-BA6B269F0D71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,15 +18,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4B2BDAD4-BB57-40FB-B8F7-CD8FE20E184B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B2BDAD4-BB57-40FB-B8F7-CD8FE20E184B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B2BDAD4-BB57-40FB-B8F7-CD8FE20E184B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B2BDAD4-BB57-40FB-B8F7-CD8FE20E184B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3963E726-6E51-40E6-992E-BA6B269F0D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3963E726-6E51-40E6-992E-BA6B269F0D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3963E726-6E51-40E6-992E-BA6B269F0D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3963E726-6E51-40E6-992E-BA6B269F0D71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {502DE5EE-EC32-4E52-8617-5AD3E0F91B7F}
+		SolutionGuid = {92D1155B-2EF5-442D-8C4C-D142FA21CFD6}
 	EndGlobalSection
 EndGlobal
