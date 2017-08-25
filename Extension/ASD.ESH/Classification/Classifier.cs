@@ -15,10 +15,9 @@ namespace ASD.ESH.Classification {
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
-            return new List<ClassificationSpan>();
-            //{
-            //    new ClassificationSpan(new SnapshotSpan(span.Snapshot, new Span(span.Start, span.Length)), Types.ParameterType)
-            //};
+            return new List<ClassificationSpan>() {
+                new ClassificationSpan(new SnapshotSpan(span.Snapshot, new Span(span.Start, span.Length)), Types.ParameterType)
+            };
         }
     }
 }
