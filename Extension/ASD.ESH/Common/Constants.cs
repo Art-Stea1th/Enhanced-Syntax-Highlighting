@@ -28,5 +28,11 @@
             public const string DisplayName = DName.Prefix + DName.Separator + FormatName;
             public const string TypeName = TName.Prefix + TName.Separator + FormatName;
         }
+
+        internal static class Method {
+            public const string FormatName = nameof(Method);
+            public const string DisplayName = DName.Prefix + DName.Separator + FormatName;
+            public const string TypeName = TName.Prefix + TName.Separator + FormatName;
+        }
     }
 }

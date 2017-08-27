@@ -17,12 +17,10 @@ namespace ASD.ESH.Classification {
 #pragma warning restore CS0649
 
         public IClassifier GetClassifier(ITextBuffer buffer) {
-
-            Singleton<Types>.Instance.OneTimeInitialize(TypeRegistryService);
+            Singleton<ClassificationTypes>.Instance.OneTimeInitialize(TypeRegistryService);
 
             return buffer.Properties.GetOrCreateSingletonProperty(nameof(Classifier),
-                () => new Classifier() as IClassifier);
+                () => new Classifier(buffer) as IClassifier);
         }
-
     }
 }
