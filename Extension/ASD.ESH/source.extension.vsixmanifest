@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="40df615b-99f6-4f5d-b5db-9d87f4801e2e" Version="0.2" Language="en-US" Publisher="Stanislav Kuzmich (Art.Stea1th)" />
+        <Identity Id="40df615b-99f6-4f5d-b5db-9d87f4801e2e" Version="0.4" Language="en-US" Publisher="Stanislav Kuzmich (Art.Stea1th)" />
         <DisplayName>Enhanced Syntax Highlighting</DisplayName>
         <Description xml:space="preserve">This is an classifier extension for Visual Studio editor based on the Roslyn APIs to enhanced highlighting custom tags in C# code to make them easily recognizable.</Description>
         <MoreInfo>https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting</MoreInfo>
@@ -15,7 +15,7 @@
     <Prerequisites>
         <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
-  <Assets>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
-  </Assets>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+    </Assets>
 </PackageManifest>

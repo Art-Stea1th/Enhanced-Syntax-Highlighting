@@ -5,19 +5,21 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace ASD.ESH.Classification {
 
-    using Common;
-    using Helpers;
-
     [Export(typeof(IClassifierProvider))]
-    [ContentType(Constants.ContentType)]
+    [ContentType("CSharp")]
     internal sealed class ClassifierProvider : IClassifierProvider {
 #pragma warning disable CS0649
-        [Import]
-        internal IClassificationTypeRegistryService TypeRegistryService; // Set via MEF
-#pragma warning restore CS0649
 
+        [Import]
+        internal IClassificationTypeRegistryService TypeRegistryService; // set via MEF
+        [Import]
+        internal IClassificationFormatMapService FormatMapService; // set via MEF
+
+#pragma warning restore CS0649
         public IClassifier GetClassifier(ITextBuffer buffer) {
-            Singleton<ClassificationTypes>.Instance.OneTimeInitialize(TypeRegistryService);
+
+            buffer.Properties.GetOrCreateSingletonProperty(nameof(ClassificationTypes),
+                () => new ClassificationTypes(TypeRegistryService, FormatMapService));
 
             return buffer.Properties.GetOrCreateSingletonProperty(nameof(Classifier),
                 () => new Classifier(buffer) as IClassifier);

@@ -13,4 +13,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("0.2.*")]
+[assembly: AssemblyVersion("0.4.*")]

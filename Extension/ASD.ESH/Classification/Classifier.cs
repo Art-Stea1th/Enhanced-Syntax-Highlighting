@@ -9,7 +9,7 @@ namespace ASD.ESH.Classification {
     internal sealed class Classifier : IClassifier {
 
         private ClassifierDocument document;
-        private ClassificationSpanProvider spanProvider;
+        private ClassificationSpanProvider provider;
         private ITextBuffer buffer;
 
 #pragma warning disable CS0067
@@ -18,21 +18,19 @@ namespace ASD.ESH.Classification {
 
         public Classifier(ITextBuffer buffer) {
             this.buffer = buffer;
-            spanProvider = new ClassificationSpanProvider();
         }
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
 
             if (document == null || document.Snapshot != span.Snapshot) {
 
-                var task = ClassifierDocument.Resolve(buffer, span.Snapshot);
+                document = ClassifierDocument.Resolve(buffer, span.Snapshot);
 
-                try { task.Wait(); }
-                catch (Exception) { return new List<ClassificationSpan>(); }
-
-                if ((document = task.Result) == null) {
+                if (document == null) {
                     return new List<ClassificationSpan>();
                 }
+                provider = new ClassificationSpanProvider(document,
+                    buffer.Properties.GetProperty(nameof(ClassificationTypes)) as ClassificationTypes);
             }
             return Classify(span).ToList();
         }
@@ -41,12 +39,8 @@ namespace ASD.ESH.Classification {
 
             foreach (var textSpan in document.GetTextSpans(span)) {
 
-                var symbol = document.GetSymbol(textSpan);
-                if (symbol == null) { continue; }
-
-                var classificationSpan = spanProvider.GetSpan(symbol.Kind, textSpan, span.Snapshot);
+                var classificationSpan = provider.GetSpan(textSpan);
                 if (classificationSpan == null) { continue; }
-
                 yield return classificationSpan;
             }
         }
