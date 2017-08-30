@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 
 namespace ASD.ESH.Classification {
 
+    using Helpers;
+
     internal sealed class Classifier : IClassifier {
 
         private ClassifierDocument document;
-        private ClassificationSpanProvider provider;
         private ITextBuffer buffer;
 
 #pragma warning disable CS0067
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 #pragma warning restore CS0067
 
-        public Classifier(ITextBuffer buffer) {
-            this.buffer = buffer;
+        public Classifier() {
+            buffer = Container.Resolve<ITextBuffer>();
         }
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
@@ -29,20 +30,23 @@ namespace ASD.ESH.Classification {
                 if (document == null) {
                     return new List<ClassificationSpan>();
                 }
-                provider = new ClassificationSpanProvider(document,
-                    buffer.Properties.GetProperty(nameof(ClassificationTypes)) as ClassificationTypes);
             }
-            return Classify(span).ToList();
+            var task = Classify(span);
+            task.Wait();
+            return task.Result;
         }
 
-        private IEnumerable<ClassificationSpan> Classify(SnapshotSpan span) {
+        private async Task<List<ClassificationSpan>> Classify(SnapshotSpan span) {
 
-            foreach (var textSpan in document.GetTextSpans(span)) {
+            var spans = await document.GetClassificationSpans(span);
+            var result = new List<ClassificationSpan>();
 
-                var classificationSpan = provider.GetSpan(textSpan);
-                if (classificationSpan == null) { continue; }
-                yield return classificationSpan;
+            foreach (var cSpan in spans) {
+
+                if (cSpan == null) { continue; }
+                result.Add(cSpan);
             }
+            return result;
         }
     }
 }

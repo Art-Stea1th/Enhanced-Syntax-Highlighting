@@ -10,26 +10,28 @@ namespace ASD.ESH.Classification {
     internal sealed class ClassificationTypes {
 
         private const string prefix = nameof(ASD) + "." + nameof(ESH);
-
-        private IEnumerable<IClassificationType> Base { get; }
         private Dictionary<SymbolKind, IClassificationType> Types { get; }
 
         public IClassificationType this[SymbolKind kind]
             => Types.ContainsKey(kind) ? Types[kind] : null;
 
-        public ClassificationTypes(
-            IClassificationTypeRegistryService typeRegistryService, IClassificationFormatMapService formatMapService) {
+        public ClassificationTypes() {
+
+            var typeRegistryService = Container.Resolve<IClassificationTypeRegistryService>();
+            var formatMapService = Container.Resolve<IClassificationFormatMapService>();
 
             var classification = typeRegistryService.GetClassificationType(type: "identifier");
-            Base = new SingleItemEnumerable<IClassificationType>(classification);
+            var @base = new List<IClassificationType> { classification };
 
             Types = new Dictionary<SymbolKind, IClassificationType> {
-                { SymbolKind.Field, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Field", Base) },
-                { SymbolKind.Method, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Method", Base) },
-                { SymbolKind.Namespace, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Namespace", Base) },
-                { SymbolKind.Parameter, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Parameter", Base) },
-                { SymbolKind.Property, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Property", Base) }
+                { SymbolKind.Field, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Field", @base) },
+                { SymbolKind.Method, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Method", @base) },
+                { SymbolKind.Namespace, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Namespace", @base) },
+                { SymbolKind.Parameter, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Parameter", @base) },
+                { SymbolKind.Property, typeRegistryService.GetOrCreateClassificationType($"{prefix}.Property", @base) }
             };
+
+
             var codeFormatMap = formatMapService.GetClassificationFormatMap(category: "text");
 
             //var fieldProperties = codeFormatMap.GetExplicitTextProperties(this[SymbolKind.Field]).SetForeground(Colors.Silver);
