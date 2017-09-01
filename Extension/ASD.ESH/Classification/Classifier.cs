@@ -1,52 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 
 namespace ASD.ESH.Classification {
 
-    using Helpers;
-
     internal sealed class Classifier : IClassifier {
 
         private ClassifierDocument document;
-        private ITextBuffer buffer;
 
 #pragma warning disable CS0067
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 #pragma warning restore CS0067
 
-        public Classifier() {
-            buffer = Container.Resolve<ITextBuffer>();
-        }
-
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
 
-            if (document == null || document.Snapshot != span.Snapshot) {
+            if (document == null || document.SnapshotSpan.Snapshot != span.Snapshot) {
 
-                document = ClassifierDocument.Resolve(buffer, span.Snapshot);
+                document = ClassifierDocument.Resolve(span);
 
                 if (document == null) {
                     return new List<ClassificationSpan>();
                 }
             }
-            var task = Classify(span);
-            task.Wait();
-            return task.Result;
-        }
 
-        private async Task<List<ClassificationSpan>> Classify(SnapshotSpan span) {
+            var spans = document.GetClassificationSpans(span);
 
-            var spans = await document.GetClassificationSpans(span);
-            var result = new List<ClassificationSpan>();
-
-            foreach (var cSpan in spans) {
-
-                if (cSpan == null) { continue; }
-                result.Add(cSpan);
+            if (spans == null) {
+                return new List<ClassificationSpan>();
             }
-            return result;
+
+            return spans.ToList();
         }
     }
 }

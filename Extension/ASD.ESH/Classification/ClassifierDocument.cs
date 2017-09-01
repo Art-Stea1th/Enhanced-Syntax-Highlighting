@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
-
-using RoslynClassifier = Microsoft.CodeAnalysis.Classification.Classifier;
 
 namespace ASD.ESH.Classification {
 
@@ -18,54 +15,43 @@ namespace ASD.ESH.Classification {
     internal sealed class ClassifierDocument {
 
         private Document document;
-        private Workspace workspace;
+        private SemanticModel semanticModel;
+        private SyntaxNode syntaxRoot;
 
-        public SemanticModel SemanticModel { get; }
-        public SyntaxNode SyntaxRoot { get; }
-        public ITextSnapshot Snapshot { get; }
+        public SnapshotSpan SnapshotSpan { get; }
 
+        private ClassificationRegistry types;
 
-        private ClassificationTypes types;
-
-        private ClassifierDocument(Document document, Workspace workspace, SemanticModel model, SyntaxNode root, ITextSnapshot snapshot) {
-            this.document = document; this.workspace = workspace; SemanticModel = model; SyntaxRoot = root; Snapshot = snapshot; types = Container.Resolve<ClassificationTypes>();
+        private ClassifierDocument(
+            Document document, SemanticModel semanticModel, SyntaxNode syntaxRoot, SnapshotSpan snapshotSpan) {
+            this.document = document;
+            this.semanticModel = semanticModel;
+            this.syntaxRoot = syntaxRoot;
+            SnapshotSpan = snapshotSpan;
+            types = Container.Resolve<ClassificationRegistry>();
         }
 
-        public static ClassifierDocument Resolve(ITextBuffer buffer, ITextSnapshot snapshot) {
-            var task = ResolveImpl(buffer, snapshot);
-            try {
-                task.Wait();
-                return task.Result;
-            }
-            catch {
-                return null;
-            }            
+        public static ClassifierDocument Resolve(SnapshotSpan snapshotSpan) {
+
+            var document = snapshotSpan.Snapshot.GetOpenDocumentInCurrentContextWithChanges();
+            if (document == null) { return null; }
+
+            var semanticModel = document.GetSemanticModel();
+            var syntaxRoot = document.GetSyntaxRoot();
+
+            return new ClassifierDocument(document, semanticModel, syntaxRoot, snapshotSpan);
         }
 
-        private static async Task<ClassifierDocument> ResolveImpl(ITextBuffer buffer, ITextSnapshot snapshot) {
+        public IEnumerable<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
 
-            var workspace = buffer.GetWorkspace();
-            var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
-
-            if (workspace == null || document == null) { return null; }
-
-            var semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
-            var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            return new ClassifierDocument(document, workspace, semanticModel, syntaxRoot, snapshot);
-        }
-
-        public async Task<IEnumerable<ClassificationSpan>> GetClassificationSpans(SnapshotSpan span) {
-
-            var classifiedSpans = await RoslynClassifier
-                .GetClassifiedSpansAsync(document, TextSpan.FromBounds(span.Start, span.End));
+            var classifiedSpans = document.GetClassifiedSpans(TextSpan.FromBounds(span.Start, span.End));
 
             bool Equals(string a, string b) => string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
 
             return classifiedSpans.Where(cs => Equals(cs.ClassificationType, "identifier")).Select(cs => GetSpan(cs.TextSpan));
         }
 
-        public ClassificationSpan GetSpan(TextSpan span) {
+        private ClassificationSpan GetSpan(TextSpan span) {
 
             var symbol = GetSymbol(span);
             if (symbol == null) {
@@ -75,24 +61,26 @@ namespace ASD.ESH.Classification {
             if (type == null) {
                 return null;
             }
-            return CreateSpan(Snapshot, span, types[symbol.Kind]);
+            return CreateSpan(SnapshotSpan.Snapshot, span, types[symbol.Kind]);
         }
 
         private ISymbol GetSymbol(TextSpan textSpan) {
 
-            var expressionSyntaxNode = GetExpression(SyntaxRoot.FindNode(textSpan));
+            var expressionSyntaxNode = GetExpression(syntaxRoot.FindNode(textSpan));
 
-            return SemanticModel.GetSymbolInfo(expressionSyntaxNode).Symbol
-                ?? SemanticModel.GetDeclaredSymbol(expressionSyntaxNode);
+            return semanticModel.GetSymbolInfo(expressionSyntaxNode).Symbol
+                ?? semanticModel.GetDeclaredSymbol(expressionSyntaxNode);
         }
 
         private SyntaxNode GetExpression(SyntaxNode node) {
-
-            return node.Kind() == SyntaxKind.Argument
-                ? (node as ArgumentSyntax).Expression
-                : node.Kind() == SyntaxKind.AttributeArgument
-                ? (node as AttributeArgumentSyntax).Expression
-                : node;
+            switch (node) {
+                case ArgumentSyntax argument:
+                    return argument.Expression;
+                case AttributeArgumentSyntax attributeArgument:
+                    return attributeArgument.Expression;
+                default:
+                    return node;
+            }
         }
 
         private ClassificationSpan CreateSpan(ITextSnapshot snapshot, TextSpan span, IClassificationType type)

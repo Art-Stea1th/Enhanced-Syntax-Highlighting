@@ -10,32 +10,26 @@ namespace ASD.ESH.Classification {
     [Export(typeof(IClassifierProvider))]
     [ContentType("CSharp")]
     internal sealed class ClassifierProvider : IClassifierProvider {
+
 #pragma warning disable CS0649
-
-        [Import]
-        private IClassificationTypeRegistryService registryService; // set via MEF
-        [Import]
-        private IClassificationFormatMapService   formatMapService; // set via MEF
-
+        [Import] private IClassificationTypeRegistryService registryService; // set via MEF
+        [Import] private IClassificationFormatMapService   formatMapService; // set via MEF
 #pragma warning restore CS0649
 
         private bool initialized = false;
 
         public IClassifier GetClassifier(ITextBuffer textBuffer) {
 
-            if (!initialized) {
-                Initialize(textBuffer);
-            }
-            return Container.Resolve<IClassifier>();
+            if (!initialized) { Initialize(); }
+
+            return new Classifier();
         }
 
-        private void Initialize(ITextBuffer textBuffer) {
+        private void Initialize() {
             try {
                 Container.Register(registryService);
                 Container.Register(formatMapService);
-                Container.Register<ClassificationTypes>();
-                Container.Register(textBuffer);
-                Container.Register<IClassifier, Classifier>();
+                Container.Register(new ClassificationRegistry(registryService, formatMapService));
                 initialized = true;
             }
             catch { initialized = false; }
