@@ -5,9 +5,7 @@ using Microsoft.VisualStudio.Text.Classification;
 
 namespace ASD.ESH.Classification {
 
-    using Helpers;
-
-    internal sealed class ClassificationRegistry {
+    internal sealed class ClassifierTypesRegistry {
 
         private const string prefix = nameof(ASD) + "." + nameof(ESH);
         private Dictionary<SymbolKind, IClassificationType> Types { get; }
@@ -15,17 +13,17 @@ namespace ASD.ESH.Classification {
         public IClassificationType this[SymbolKind kind]
             => Types.ContainsKey(kind) ? Types[kind] : null;
 
-        public ClassificationRegistry(IClassificationTypeRegistryService registryService, IClassificationFormatMapService formatMapService) {
+        public ClassifierTypesRegistry(IClassificationTypeRegistryService registryService, IClassificationFormatMapService formatMapService) {
 
             var classification = registryService.GetClassificationType(type: "identifier");
             var @base = new List<IClassificationType> { classification };
 
             Types = new Dictionary<SymbolKind, IClassificationType> {
-                { SymbolKind.Field, registryService.GetOrCreateClassificationType($"{prefix}.Field", @base) },
-                { SymbolKind.Method, registryService.GetOrCreateClassificationType($"{prefix}.Method", @base) },
-                { SymbolKind.Namespace, registryService.GetOrCreateClassificationType($"{prefix}.Namespace", @base) },
-                { SymbolKind.Parameter, registryService.GetOrCreateClassificationType($"{prefix}.Parameter", @base) },
-                { SymbolKind.Property, registryService.GetOrCreateClassificationType($"{prefix}.Property", @base) }
+                { SymbolKind.Field, GetOrCreateClassificationType(registryService, $"{prefix}.Field", @base) },
+                { SymbolKind.Method, GetOrCreateClassificationType(registryService, $"{prefix}.Method", @base) },
+                { SymbolKind.Namespace, GetOrCreateClassificationType(registryService, $"{prefix}.Namespace", @base) },
+                { SymbolKind.Parameter, GetOrCreateClassificationType(registryService, $"{prefix}.Parameter", @base) },
+                { SymbolKind.Property, GetOrCreateClassificationType(registryService, $"{prefix}.Property", @base) }
             };
 
 
@@ -42,6 +40,13 @@ namespace ASD.ESH.Classification {
             //codeFormatMap.AddExplicitTextProperties(this[SymbolKind.Namespace], namespaceProperties, classification);
             codeFormatMap.AddExplicitTextProperties(this[SymbolKind.Parameter], parameterProperties);
             codeFormatMap.AddExplicitTextProperties(this[SymbolKind.Property], propertyProperties);
+        }
+
+        private static IClassificationType GetOrCreateClassificationType(
+            IClassificationTypeRegistryService service, string typeName, IEnumerable<IClassificationType> baseTypes) {
+            return
+                service.GetClassificationType(typeName) ??
+                service.CreateClassificationType(typeName, baseTypes);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace ASD.ESH.Classification {
 
         private bool initialized = false;
 
-        public IClassifier GetClassifier(ITextBuffer textBuffer) {
+        IClassifier IClassifierProvider.GetClassifier(ITextBuffer textBuffer) {
 
             if (!initialized) { Initialize(); }
 
@@ -26,13 +26,7 @@ namespace ASD.ESH.Classification {
         }
 
         private void Initialize() {
-            try {
-                Container.Register(registryService);
-                Container.Register(formatMapService);
-                Container.Register(new ClassificationRegistry(registryService, formatMapService));
-                initialized = true;
-            }
-            catch { initialized = false; }
+            Container.Register(new ClassifierTypesRegistry(registryService, formatMapService));
         }
     }
 }

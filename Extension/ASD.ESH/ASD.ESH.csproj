@@ -47,10 +47,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classification\ClassificationRegistry.cs" />
-    <Compile Include="Classification\Classifier.cs" />
+    <Compile Include="Classification\ClassifierCache.cs" />
     <Compile Include="Classification\ClassifierProvider.cs" />
-    <Compile Include="Classification\ClassifierDocument.cs" />
+    <Compile Include="Classification\ClassifierSpansConverter.cs" />
+    <Compile Include="Classification\Classifier.cs" />
+    <Compile Include="Classification\ClassifierTypesRegistry.cs" />
     <Compile Include="Helpers\Container.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

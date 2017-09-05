@@ -1,37 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 
 namespace ASD.ESH.Classification {
 
-    internal sealed class Classifier : IClassifier {
+    using Helpers;
 
-        private ClassifierDocument document;
+    internal sealed partial class Classifier : IClassifier {
 
 #pragma warning disable CS0067
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 #pragma warning restore CS0067
 
+        private ClassifierCache cache = new ClassifierCache();
+
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
 
-            if (document == null || document.SnapshotSpan.Snapshot != span.Snapshot) {
+            var snapshot = span.Snapshot;
 
-                document = ClassifierDocument.Resolve(span);
+            var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
+            if (document == null) { return EmptyList<ClassificationSpan>(); }
 
-                if (document == null) {
-                    return new List<ClassificationSpan>();
-                }
+            var cached = cache.GetOrNull(document.Id);
+            if (cached == null || cached.Snapshot != snapshot) {
+
+                Task.Factory.StartNew(async ()
+                    => cache.AddOrUpdate(document.Id, snapshot, await GetSpansAsync(document, snapshot)));
             }
-
-            var spans = document.GetClassificationSpans(span);
-
-            if (spans == null) {
-                return new List<ClassificationSpan>();
-            }
-
-            return spans.ToList();
+            return cached?.Spans ?? EmptyList<ClassificationSpan>();
         }
+
+        private async Task<IList<ClassificationSpan>> GetSpansAsync(Document document, ITextSnapshot snapshot) {
+
+            var model = await document.GetSemanticModelAsync();
+            var root = await document.GetSyntaxRootAsync();
+            var spans = await document.GetClassifiedSpansAsync(new TextSpan(0, snapshot.Length));
+
+            var resultSpans = new List<ClassificationSpan>(spans.Count());
+            var converter = new ClassifierSpansConverter(model, root, snapshot);
+
+            Parallel.ForEach(converter.ConvertAll(spans), (span) => {
+                resultSpans.Add(span);
+            });
+            return resultSpans;
+        }
+
+        private static IList<T> EmptyList<T>() => Enumerable.Empty<T>().ToList();
     }
 }
