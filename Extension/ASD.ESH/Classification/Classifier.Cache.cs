@@ -10,20 +10,20 @@ namespace ASD.ESH.Classification {
 
     internal sealed partial class Classifier {
 
-        internal sealed class ClassifierCache {
+        private sealed class Cache {
 
-            private readonly int maxUnitsCount;
-            private readonly ConcurrentDictionary<DocumentId, CacheUnit> units;
+            private readonly int maxUnitsCount = 32;
+            private readonly ConcurrentDictionary<DocumentId, Unit> units;
 
-            public ClassifierCache(int maxUnitsCount = 32) {
+            public Cache(int maxUnitsCount = 32) {
                 this.maxUnitsCount = maxUnitsCount;
-                units = new ConcurrentDictionary<DocumentId, CacheUnit>();
+                units = new ConcurrentDictionary<DocumentId, Unit>();
             }
 
             public void AddOrUpdate(DocumentId documentId, ITextSnapshot snapshot, IList<ClassificationSpan> spans) {
                 ReduceCache();
                 units.AddOrUpdate(documentId,
-                    (id) => new CacheUnit(snapshot, spans), (id, oldUnit) => new CacheUnit(snapshot, spans));
+                    (id) => new Unit(snapshot, spans), (id, oldUnit) => new Unit(snapshot, spans));
             }
 
             public ICacheUnit GetOrNull(DocumentId id) => units.SingleOrDefault(u => u.Key == id).Value;
@@ -41,14 +41,14 @@ namespace ASD.ESH.Classification {
                 }
             }
 
-            private sealed class CacheUnit : ICacheUnit {
+            private sealed class Unit : ICacheUnit {
 
                 public ITextSnapshot Snapshot { get; }
                 public IList<ClassificationSpan> Spans { get; }
 
                 public DateTime CreationTime { get; }
 
-                public CacheUnit(ITextSnapshot snapshot, IList<ClassificationSpan> spans) {
+                public Unit(ITextSnapshot snapshot, IList<ClassificationSpan> spans) {
                     Snapshot = snapshot; Spans = spans; CreationTime = DateTime.Now;
                 }
             }
@@ -58,5 +58,5 @@ namespace ASD.ESH.Classification {
             ITextSnapshot Snapshot { get; }
             IList<ClassificationSpan> Spans { get; }
         }
-    }        
+    }
 }

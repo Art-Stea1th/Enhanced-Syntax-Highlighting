@@ -17,7 +17,7 @@ namespace ASD.ESH.Classification {
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 #pragma warning restore CS0067
 
-        private ClassifierCache cache = new ClassifierCache();
+        private Cache cache = new Cache();
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
 
@@ -42,7 +42,7 @@ namespace ASD.ESH.Classification {
             var spans = await document.GetClassifiedSpansAsync(new TextSpan(0, snapshot.Length));
 
             var resultSpans = new List<ClassificationSpan>(spans.Count());
-            var converter = new ClassifierSpansConverter(model, root, snapshot);
+            var converter = new SpansConverter(model, root, snapshot);
 
             Parallel.ForEach(converter.ConvertAll(spans), (span) => {
                 resultSpans.Add(span);

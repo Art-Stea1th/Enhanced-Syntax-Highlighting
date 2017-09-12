@@ -2,28 +2,24 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Classification;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
+using CSSyntax = Microsoft.CodeAnalysis.CSharp.Syntax;
+using VBSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace ASD.ESH.Classification {
 
-    using Helpers;
-
     internal sealed partial class Classifier {
 
-        private sealed class ClassifierSpansConverter {
+        internal sealed class SpansConverter {
 
             private SemanticModel model;
             private SyntaxNode root;
             private ITextSnapshot snapshot;
 
-            private ClassifierTypesRegistry types;
-
-            public ClassifierSpansConverter(SemanticModel model, SyntaxNode root, ITextSnapshot snapshot) {
+            public SpansConverter(SemanticModel model, SyntaxNode root, ITextSnapshot snapshot) {
                 this.model = model; this.root = root; this.snapshot = snapshot;
-                types = Container.Resolve<ClassifierTypesRegistry>();
             }
 
             public IEnumerable<ClassificationSpan> ConvertAll(IEnumerable<ClassifiedSpan> spans) {
@@ -43,7 +39,7 @@ namespace ASD.ESH.Classification {
                 var symbol = GetSymbol(span.TextSpan);
                 if (symbol == null) { return null; }
 
-                var type = types[symbol.Kind];
+                var type = TypesRegistry.ResolveType(symbol.Kind);
                 if (type == null) { return null; }
 
                 return CreateSpan(span.TextSpan, type);
@@ -58,11 +54,14 @@ namespace ASD.ESH.Classification {
             }
 
             private SyntaxNode GetExpression(SyntaxNode node) {
+
                 switch (node) {
-                    case ArgumentSyntax argument:
-                        return argument.Expression;
-                    case AttributeArgumentSyntax attributeArgument:
-                        return attributeArgument.Expression;
+                    case CSSyntax.ArgumentSyntax s:
+                        return s.Expression;
+                    case CSSyntax.AttributeArgumentSyntax s:
+                        return s.Expression;
+                    case VBSyntax.SimpleArgumentSyntax s:
+                        return s.Expression;
                     default:
                         return node;
                 }
