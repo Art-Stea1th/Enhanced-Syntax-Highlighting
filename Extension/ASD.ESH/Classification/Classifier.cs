@@ -17,7 +17,10 @@ namespace ASD.ESH.Classification {
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 #pragma warning restore CS0067
 
-        private Cache cache = new Cache();
+        private Document document;
+        private ITextSnapshot snapshot;
+
+        private IList<ClassificationSpan> lastSpans;
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
 
@@ -26,13 +29,13 @@ namespace ASD.ESH.Classification {
             var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null) { return EmptyList<ClassificationSpan>(); }
 
-            var cached = cache.GetOrNull(document.Id);
-            if (cached == null || cached.Snapshot != snapshot) {
+            if (this.document?.Id != document.Id || this.snapshot != snapshot) {
 
-                Task.Factory.StartNew(async ()
-                    => cache.AddOrUpdate(document.Id, snapshot, await GetSpansAsync(document, snapshot)));
+                this.document = document; this.snapshot = snapshot;
+
+                Task.Factory.StartNew(async () => lastSpans = await GetSpansAsync(document, snapshot));
             }
-            return cached?.Spans ?? EmptyList<ClassificationSpan>();
+            return lastSpans ?? EmptyList<ClassificationSpan>();
         }
 
         private async Task<IList<ClassificationSpan>> GetSpansAsync(Document document, ITextSnapshot snapshot) {

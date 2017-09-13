@@ -47,7 +47,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classification\Classifier.Cache.cs" />
     <Compile Include="Classification\Classifier.cs" />
     <Compile Include="Classification\Classifier.SpansConverter.cs" />
     <Compile Include="Classification\ClassifierProvider.cs" />
