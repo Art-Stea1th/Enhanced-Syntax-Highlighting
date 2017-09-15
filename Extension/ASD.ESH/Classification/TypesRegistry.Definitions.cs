@@ -19,7 +19,7 @@ namespace ASD.ESH.Classification {
             [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Field))]
             private sealed class FieldFormatDefinition : FormatDefinition {
                 public FieldFormatDefinition()
-                    : base($"{SymbolKind.Field}", Colors.LightSkyBlue) { }
+                    : base($"{SymbolKind.Field}", "#9CDCFE") { }
             }
 
 
@@ -31,7 +31,7 @@ namespace ASD.ESH.Classification {
             [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Method))]
             private sealed class MethodFormatDefinition : FormatDefinition {
                 public MethodFormatDefinition()
-                    : base($"{SymbolKind.Method}", Colors.PaleGoldenrod) { }
+                    : base($"{SymbolKind.Method}", "#DCDCAA") { }
             }
 
 
@@ -55,7 +55,7 @@ namespace ASD.ESH.Classification {
             [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Parameter))]
             private sealed class ParameterFormatDefinition : FormatDefinition {
                 public ParameterFormatDefinition()
-                    : base($"{SymbolKind.Parameter}", Colors.Gray) { }
+                    : base($"{SymbolKind.Parameter}", "#808080") { }
             }
 
 
@@ -67,7 +67,7 @@ namespace ASD.ESH.Classification {
             [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Property))]
             private sealed class PropertyFormatDefinition : FormatDefinition {
                 public PropertyFormatDefinition()
-                    : base($"{SymbolKind.Property}", Colors.LightSkyBlue) { }
+                    : base($"{SymbolKind.Property}", "#9CDCFE") { }
             }
 
 
@@ -86,8 +86,8 @@ namespace ASD.ESH.Classification {
 
             private abstract class FormatDefinition : ClassificationFormatDefinition {
 
-                public FormatDefinition(string displayName, Color defaultForegroundColor)
-                    : this(displayName) => ForegroundColor = defaultForegroundColor;
+                public FormatDefinition(string displayName, string defaultForegroundColor)
+                    : this(displayName) => ForegroundColor = (Color)ColorConverter.ConvertFromString(defaultForegroundColor);
 
                 public FormatDefinition(string displayName)
                     => DisplayName = $"User Tags - {displayName}";

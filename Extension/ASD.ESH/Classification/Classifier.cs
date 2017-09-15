@@ -53,6 +53,6 @@ namespace ASD.ESH.Classification {
             return resultSpans;
         }
 
-        private static IList<T> EmptyList<T>() => Enumerable.Empty<T>().ToList();
+        private static IList<TItem> EmptyList<TItem>() => Enumerable.Empty<TItem>().ToList();
     }
 }
