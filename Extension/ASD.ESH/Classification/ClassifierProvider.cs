@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Utilities;
 namespace ASD.ESH.Classification {
 
     [Export(typeof(IClassifierProvider))]
-    [ContentType("CSharp"), ContentType("Basic")]
+    [ContentType("CSharp")]
     internal sealed class ClassifierProvider : IClassifierProvider {
 
 #pragma warning disable CS0649

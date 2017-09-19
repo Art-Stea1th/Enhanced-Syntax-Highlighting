@@ -1,2 +1,4 @@
 # Enhanced Syntax Highlighting
-This is an classifier extension for Visual Studio editor based on the Roslyn APIs to enhanced highlighting custom tags in C# code to make them easily recognizable.
+Visual Studio editor classifier extension based on the Roslyn APIs to enhanced highlighting custom tags in C# code.
+
+![ESH-Preview](https://raw.githubusercontent.com/Art-Stea1th/Enhanced-Syntax-Highlighting/master/Extension/ASD.ESH/Assets/Preview.png)
