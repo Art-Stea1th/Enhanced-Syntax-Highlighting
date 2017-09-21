@@ -78,12 +78,14 @@ namespace ASD.ESH.Classification {
 
             private abstract class FormatDefinition : ClassificationFormatDefinition {
 
-                public FormatDefinition(string displayName, string defaultForegroundColor)
-                    : this(displayName) => ForegroundColor = (Color)ColorConverter
-                    .ConvertFromString(defaultForegroundColor);
+                public FormatDefinition(string displayName, string defaultForegroundColor) : this(displayName) {
+                    ForegroundColor = (Color)ColorConverter
+                        .ConvertFromString(defaultForegroundColor);
+                }
 
-                public FormatDefinition(string displayName)
-                    => DisplayName = $"User Tags - {displayName}";
+                public FormatDefinition(string displayName) {
+                    DisplayName = $"User Tags - {displayName}";
+                }
             }
         }
     }

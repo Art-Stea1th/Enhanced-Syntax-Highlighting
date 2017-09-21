@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Classification;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
@@ -15,7 +16,6 @@ namespace ASD.ESH.Classification {
 
             private SemanticModel model;
             private SyntaxNode root;
-
             private ITextSnapshot snapshot;
 
             public SpansConverter(SemanticModel model, SyntaxNode root, ITextSnapshot snapshot) {
@@ -55,11 +55,11 @@ namespace ASD.ESH.Classification {
 
             private SyntaxNode GetExpression(SyntaxNode node) {
 
-                switch (node) {
-                    case ArgumentSyntax s:
-                        return s.Expression;
-                    case AttributeArgumentSyntax s:
-                        return s.Expression;
+                switch (node.Kind()) {
+                    case SyntaxKind.Argument:
+                        return (node as ArgumentSyntax).Expression;
+                    case SyntaxKind.AttributeArgument:
+                        return (node as AttributeArgumentSyntax).Expression;
                     default:
                         return node;
                 }
