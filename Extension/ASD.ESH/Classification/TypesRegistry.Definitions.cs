@@ -35,42 +35,42 @@ namespace ASD.ESH.Classification {
 #pragma warning restore CS0649
 
             [Export(typeof(EditorFormatDefinition)), Name(pF + nameof(SymbolKind.Field)), UserVisible(true)]
-            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Field)), Order(After = priority)]
+            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Field)), Order(Before = priority)]
             private sealed class FieldFormatDefinition : FormatDefinition {
                 public FieldFormatDefinition()
                     : base($"{SymbolKind.Field}", "#9CDCFE") { }
             }
 
             [Export(typeof(EditorFormatDefinition)), Name(pF + nameof(SymbolKind.Method)), UserVisible(true)]
-            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Method)), Order(After = priority)]
+            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Method)), Order(Before = priority)]
             private sealed class MethodFormatDefinition : FormatDefinition {
                 public MethodFormatDefinition()
                     : base($"{SymbolKind.Method}", "#DCDCAA") { }
             }
 
             [Export(typeof(EditorFormatDefinition)), Name(pF + nameof(SymbolKind.Namespace)), UserVisible(true)]
-            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Namespace)), Order(After = priority)]
+            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Namespace)), Order(Before = priority)]
             private sealed class NamespaceFormatDefinition : FormatDefinition {
                 public NamespaceFormatDefinition()
                     : base($"{SymbolKind.Namespace}") { }
             }
 
             [Export(typeof(EditorFormatDefinition)), Name(pF + nameof(SymbolKind.Parameter)), UserVisible(true)]
-            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Parameter)), Order(After = priority)]
+            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Parameter)), Order(Before = priority)]
             private sealed class ParameterFormatDefinition : FormatDefinition {
                 public ParameterFormatDefinition()
                     : base($"{SymbolKind.Parameter}", "#808080") { }
             }
 
             [Export(typeof(EditorFormatDefinition)), Name(pF + nameof(SymbolKind.Property)), UserVisible(true)]
-            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Property)), Order(After = priority)]
+            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Property)), Order(Before = priority)]
             private sealed class PropertyFormatDefinition : FormatDefinition {
                 public PropertyFormatDefinition()
                     : base($"{SymbolKind.Property}", "#9CDCFE") { }
             }
 
             [Export(typeof(EditorFormatDefinition)), Name(pF + nameof(SymbolKind.Local)), UserVisible(true)]
-            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Local)), Order(After = priority)]
+            [ClassificationType(ClassificationTypeNames = pT + nameof(SymbolKind.Local)), Order(Before = priority)]
             private sealed class LocalFormatDefinition : FormatDefinition {
                 public LocalFormatDefinition()
                     : base($"{SymbolKind.Local} Variable") { }
