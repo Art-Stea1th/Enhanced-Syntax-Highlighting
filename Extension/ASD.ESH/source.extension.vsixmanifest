@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="40DF615B-99F6-4F5D-B5DB-9D87F4801E2E" Version="1.1" Language="en-US" Publisher="Stanislav Kuzmich [Art.Stea1th]" />
+        <Identity Id="40DF615B-99F6-4F5D-B5DB-9D87F4801E2E" Version="1.1" Language="en-US" Publisher="Stanislav Kuzmich" />
         <DisplayName>Enhanced Syntax Highlighting</DisplayName>
         <Description xml:space="preserve">Visual Studio editor classifier extension based on the Roslyn APIs to enhanced highlighting custom tags in C# code.</Description>
         <MoreInfo>https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting</MoreInfo>
