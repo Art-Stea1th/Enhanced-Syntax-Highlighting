@@ -39,7 +39,7 @@ namespace ASD.ESH.Classification {
                 var symbol = GetSymbol(span.TextSpan);
                 if (symbol == null) { return null; }
 
-                var type = TypesRegistry.ResolveType(symbol.Kind);
+                var type = TypesRegistry.ResolveType(symbol);
                 if (type == null) { return null; }
 
                 return CreateSpan(span.TextSpan, type);
