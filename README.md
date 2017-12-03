@@ -5,10 +5,10 @@
 
 ![ESH-Preview](https://raw.githubusercontent.com/Art-Stea1th/Enhanced-Syntax-Highlighting/master/Extension/ASD.ESH/Assets/Preview.png)
 
-Added syntax highlighting for "**Field**", "**Local Variable**", "**Method**", "**Namespace**", "**Parameter**" and "**Property**".
+Added **syntax highlighting** for "**Enum Entries**", "**Events**", "**Fields**", "**Fieds (Constant)**", "**Local Variables**", "**Methods**", "**Methods (Extension)**", "**Methods (Static)**", "**Namespaces**", "**Parameters**" and "**Properties**".
 
 You can change the syntax highlighting settings by going to "**Tools**" > "**Options**" > "**Environment**" > "**Fonts and Colors**" > "**Text Editor**" and scrolling to properties starting with the prefix "**User Tag - ...**".
 
 The syntax highlighting options for "**Classes**", "**Delegates**", "**Enums**", "**Interfaces**", "**Modules**", "**Structures**" and "**Type Parameters**" are just below, they have the prefix "**User Types - ...**" and are built-in default.
 
-[![Releases](https://img.shields.io/badge/Releases-All-green.svg?style=flat-square&colorB=9FB861)](https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting/releases) [![v 1.1 build 6517 rev. 36753](https://img.shields.io/badge/v%201.1%20build%206517%20rev.%2036753-Latest-green.svg?style=flat-square&colorB=9FB861)](https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting/releases/tag/1.1.6517.36753)
+[![Releases](https://img.shields.io/badge/Releases-All-green.svg?style=flat-square&colorB=9FB861)](https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting/releases) [![v 1.1 build 6547 rev. 73](https://img.shields.io/badge/v%201.1%20build%206547%20rev.%2073-Latest-green.svg?style=flat-square&colorB=9FB861)](https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting/releases/tag/1.1.6547.73)
