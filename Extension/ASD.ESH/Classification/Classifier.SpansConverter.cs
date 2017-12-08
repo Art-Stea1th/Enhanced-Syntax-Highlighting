@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Stanislav Kuzmich.  All Rights Reserved.
+// Licensed under the Microsoft Public License (MS-PL).
+// See License.txt in the project for license information.
+
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Classification;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
+
+using CS = Microsoft.CodeAnalysis.CSharp;
+using VB = Microsoft.CodeAnalysis.VisualBasic;
 
 namespace ASD.ESH.Classification {
 
@@ -55,11 +60,13 @@ namespace ASD.ESH.Classification {
 
             private SyntaxNode GetExpression(SyntaxNode node) {
 
-                switch (node.Kind()) {
-                    case SyntaxKind.Argument:
-                        return (node as ArgumentSyntax).Expression;
-                    case SyntaxKind.AttributeArgument:
-                        return (node as AttributeArgumentSyntax).Expression;
+                switch (node) {
+                    case CS.Syntax.ArgumentSyntax s:
+                        return s.Expression;
+                    case CS.Syntax.AttributeArgumentSyntax s:
+                        return s.Expression;
+                    case VB.Syntax.SimpleArgumentSyntax s:
+                        return s.Expression;
                     default:
                         return node;
                 }
@@ -67,6 +74,7 @@ namespace ASD.ESH.Classification {
 
             private ClassificationSpan CreateSpan(TextSpan span, IClassificationType type)
                 => new ClassificationSpan(new SnapshotSpan(snapshot, new Span(span.Start, span.Length)), type);
+
         }
     }
 }

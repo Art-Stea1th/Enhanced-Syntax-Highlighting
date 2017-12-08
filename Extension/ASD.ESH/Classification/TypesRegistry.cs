@@ -1,4 +1,8 @@
-﻿using Microsoft.CodeAnalysis;
+﻿// Copyright (c) Stanislav Kuzmich.  All Rights Reserved.
+// Licensed under the Microsoft Public License (MS-PL).
+// See License.txt in the project for license information.
+
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.VisualStudio.Text.Classification;
 
@@ -29,7 +33,7 @@ namespace ASD.ESH.Classification {
                 case SymbolKind.Field:
                     userTagName
                         = symbol.ContainingType.TypeKind == TypeKind.Enum
-                        ? UserTagName.Enum
+                        ? UserTagName.FieldEnum
                         : modifier.IsConst
                         ? UserTagName.FieldConstant
                         : UserTagName.Field; break;
@@ -56,7 +60,7 @@ namespace ASD.ESH.Classification {
 
                 case SymbolKind.Local:
                     userTagName
-                        = UserTagName.Local; break;
+                        = UserTagName.LocalVariable; break;
             }
 
             return userTagName != null
@@ -66,17 +70,17 @@ namespace ASD.ESH.Classification {
 
         private static class UserTagName {
 
-            public const string Enum = nameof(TypeKind.Enum);
             public const string Event = nameof(SymbolKind.Event);
             public const string Field = nameof(SymbolKind.Field);
             public const string FieldConstant = nameof(SymbolKind.Field) + "Constant";
+            public const string FieldEnum = nameof(TypeKind.Enum);
+            public const string LocalVariable = nameof(SymbolKind.Local);
             public const string Method = nameof(SymbolKind.Method);
             public const string MethodExtension = nameof(SymbolKind.Method) + "Extension";
             public const string MethodStatic = nameof(SymbolKind.Method) + "Static";
             public const string Namespace = nameof(SymbolKind.Namespace);
             public const string Parameter = nameof(SymbolKind.Parameter);
             public const string Property = nameof(SymbolKind.Property);
-            public const string Local = nameof(SymbolKind.Local);
         }
     }
 }

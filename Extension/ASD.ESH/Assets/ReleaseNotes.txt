@@ -1,0 +1,17 @@
+﻿- v 1.2 build **** rev. *****
+Added: support for Visual Basic.
+
+- v 1.1 build 6547 rev. 73
+Added: syntax highlighting for: Events, Fields (Constant), Fields (Inside Enums), Methods (Extension), Methods (Static).
+
+- v 1.1 build 6517 rev. 36753
+Fixed: the "Identifier" color change overrides all "User Tags".
+
+- v 1.1 build 6480 rev. 32178
+Fixed: the syntax highlighting stay active on breakpoints during debugging.
+
+- v 1.1 build 6473 rev. 34268
+Added: support for Visual Studio 2015.
+
+- v 1.0 build 6471 rev. 33461
+Added: syntax highlighting for "Field", "Local Variable", "Method", "Namespace", "Parameter" and "Property" for C# files for Visual Studio 2017.
