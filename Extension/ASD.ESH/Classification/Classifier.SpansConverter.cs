@@ -24,14 +24,10 @@ namespace ASD.ESH.Classification {
 
             public IEnumerable<ClassificationSpan> ConvertAll(IEnumerable<ClassifiedSpan> spans) {
 
-                var filteredByType = spans.Where(s => s.ClassificationType == ClassificationTypeNames.Identifier);
-
-                foreach (var span in filteredByType) {
-                    var converted = Convert(span);
-                    if (converted != null) {
-                        yield return converted;
-                    }
-                }
+                return spans
+                    .Where( s => s.ClassificationType == ClassificationTypeNames.Identifier )
+                    .Select( s => Convert(s) )
+                    .Where( cs => cs != null );
             }
 
             private ClassificationSpan Convert(ClassifiedSpan span) {
