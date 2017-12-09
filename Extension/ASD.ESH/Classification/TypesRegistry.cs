@@ -8,11 +8,20 @@ namespace ASD.ESH.Classification {
         private const string pT = "ASD-ESH.";         // prefix   type-name
         private const string pF = pT + "Definition."; // prefix format-name
 
-        private static IClassificationTypeRegistryService registryService;
-        public static bool Initialized => registryService != null;
+        private static readonly object token = new object();
+        private static IClassificationTypeRegistryService registryService = null;
 
-        public static void Initialize(IClassificationTypeRegistryService service)
-            => registryService = service;
+        public static void InitializeIfNeeded( IClassificationTypeRegistryService service ) {
+            if ( service == null )
+                throw new System.ArgumentNullException( nameof(service) );
+
+            if ( registryService == null ) {
+                lock ( token ) {
+                    if ( registryService == null )
+                        registryService = service;
+                }
+            }
+        }
 
         public static IClassificationType ResolveType(SymbolKind kind)
             => registryService.GetClassificationType($"{pT}{kind}");
