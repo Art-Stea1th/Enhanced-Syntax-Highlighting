@@ -13,12 +13,13 @@ namespace ASD.ESH.Classification {
         [Import] private IClassificationTypeRegistryService registryService; // set via MEF
 #pragma warning restore CS0649
 
-        IClassifier IClassifierProvider.GetClassifier(ITextBuffer textBuffer) {
-
-            if (!TypesRegistry.Initialized) {
-                TypesRegistry.Initialize(registryService);
-            }
-            return new Classifier();
+        IClassifier IClassifierProvider.GetClassifier( ITextBuffer textBuffer ) {
+            return textBuffer.Properties.GetOrCreateSingletonProperty(
+                creator: () => {
+                    TypesRegistry.InitializeIfNeeded( registryService );
+                    return new Classifier();
+                }
+            );
         }
     }
 }
