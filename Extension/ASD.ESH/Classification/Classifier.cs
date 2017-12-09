@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Stanislav Kuzmich.  All Rights Reserved.
+// Licensed under the Microsoft Public License (MS-PL).
+// See License.txt in the project for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

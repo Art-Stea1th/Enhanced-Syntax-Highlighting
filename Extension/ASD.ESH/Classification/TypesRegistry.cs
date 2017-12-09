@@ -1,4 +1,9 @@
-﻿using Microsoft.CodeAnalysis;
+﻿// Copyright (c) Stanislav Kuzmich.  All Rights Reserved.
+// Licensed under the Microsoft Public License (MS-PL).
+// See License.txt in the project for license information.
+
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Editing;
 using Microsoft.VisualStudio.Text.Classification;
 
 namespace ASD.ESH.Classification {
@@ -23,7 +28,68 @@ namespace ASD.ESH.Classification {
             }
         }
 
-        public static IClassificationType ResolveType(SymbolKind kind)
-            => registryService.GetClassificationType($"{pT}{kind}");
+        public static IClassificationType ResolveType(ISymbol symbol) {
+
+            var userTagName = default(string);
+            var modifier = DeclarationModifiers.From(symbol);
+
+            switch (symbol.Kind) {
+
+                case SymbolKind.Event:
+                    userTagName
+                        = UserTagName.Event; break;
+
+                case SymbolKind.Field:
+                    userTagName
+                        = symbol.ContainingType.TypeKind == TypeKind.Enum
+                        ? UserTagName.FieldEnum
+                        : modifier.IsConst
+                        ? UserTagName.FieldConstant
+                        : UserTagName.Field; break;
+
+                case SymbolKind.Method:
+                    userTagName
+                        = (symbol as IMethodSymbol).IsExtensionMethod
+                        ? UserTagName.MethodExtension
+                        : modifier.IsStatic
+                        ? UserTagName.MethodStatic
+                        : UserTagName.Method; break;
+
+                case SymbolKind.Namespace:
+                    userTagName
+                        = UserTagName.Namespace; break;
+
+                case SymbolKind.Parameter:
+                    userTagName
+                        = UserTagName.Parameter; break;
+
+                case SymbolKind.Property:
+                    userTagName
+                        = UserTagName.Property; break;
+
+                case SymbolKind.Local:
+                    userTagName
+                        = UserTagName.LocalVariable; break;
+            }
+
+            return userTagName != null
+                ? registryService.GetClassificationType($"{pT}{userTagName}")
+                : null;
+        }
+
+        private static class UserTagName {
+
+            public const string Event = nameof(SymbolKind.Event);
+            public const string Field = nameof(SymbolKind.Field);
+            public const string FieldConstant = nameof(SymbolKind.Field) + "Constant";
+            public const string FieldEnum = nameof(TypeKind.Enum);
+            public const string LocalVariable = nameof(SymbolKind.Local);
+            public const string Method = nameof(SymbolKind.Method);
+            public const string MethodExtension = nameof(SymbolKind.Method) + "Extension";
+            public const string MethodStatic = nameof(SymbolKind.Method) + "Static";
+            public const string Namespace = nameof(SymbolKind.Namespace);
+            public const string Parameter = nameof(SymbolKind.Parameter);
+            public const string Property = nameof(SymbolKind.Property);
+        }
     }
 }
