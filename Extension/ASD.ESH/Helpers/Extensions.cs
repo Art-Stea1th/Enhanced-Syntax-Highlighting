@@ -9,8 +9,8 @@ namespace ASD.ESH.Helpers {
 
     internal static class Extensions {
 
-        public static async Task<IEnumerable<ClassifiedSpan>> GetClassifiedSpansAsync(
+        public static Task<IEnumerable<ClassifiedSpan>> GetClassifiedSpansAsync(
             this Document document, TextSpan textSpan, CancellationToken cancellationToken = default(CancellationToken))
-            => await Classifier.GetClassifiedSpansAsync(document, textSpan, cancellationToken);
+            => Classifier.GetClassifiedSpansAsync(document, textSpan, cancellationToken);
     }
 }
