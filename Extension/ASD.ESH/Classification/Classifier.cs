@@ -21,42 +21,48 @@ namespace ASD.ESH.Classification {
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 #pragma warning restore CS0067
 
-        private Document document;
-        private ITextSnapshot snapshot;
+        private static readonly IList<ClassificationSpan> emptyList = new List<ClassificationSpan>( capacity:0 ).AsReadOnly();
 
-        private IList<ClassificationSpan> lastSpans;
+        private Document document = null;
+        private ITextSnapshot snapshot = null;
+        private IList<ClassificationSpan> lastSpans = emptyList;
 
-        public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
-
+        public IList<ClassificationSpan> GetClassificationSpans( SnapshotSpan span ) {
             var snapshot = span.Snapshot;
-
             var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
-            if (document == null) { return EmptyList<ClassificationSpan>(); }
 
-            if (this.document?.Id != document.Id || this.snapshot != snapshot) {
+            if ( document == null )
+                return emptyList;
 
-                this.document = document; this.snapshot = snapshot;
+            if ( this.document?.Id == document.Id && this.snapshot == snapshot )
+                return lastSpans;
 
-                Task.Factory.StartNew(async () => lastSpans = await GetSpansAsync(document, snapshot));
-            }
-            return lastSpans ?? EmptyList<ClassificationSpan>();
+            this.document = document;
+            this.snapshot = snapshot;
+
+            lastSpans = Task.Run( () => getSpansAync(document,snapshot) ).GetAwaiter().GetResult();
+
+            return lastSpans;
         }
 
-        private async Task<IList<ClassificationSpan>> GetSpansAsync(Document document, ITextSnapshot snapshot) {
+        private async Task<IList<ClassificationSpan>> getSpansAync( Document document, ITextSnapshot snapshot ) {
+            var modelTask = document.GetSemanticModelAsync();
+            var rootTask = document.GetSyntaxRootAsync();
+            var spansTask = document.GetClassifiedSpansAsync( new TextSpan(0,snapshot.Length) );
 
-            var model = await document.GetSemanticModelAsync();
-            var root = await document.GetSyntaxRootAsync();
-            var spans = await document.GetClassifiedSpansAsync(new TextSpan(0, snapshot.Length));
+            await Task.WhenAll( modelTask, rootTask, spansTask );
 
-            var resultSpans = new List<ClassificationSpan>(spans.Count());
-            var converter = new SpansConverter(model, root, snapshot);
+            var model = modelTask.GetAwaiter().GetResult();
+            var root = rootTask.GetAwaiter().GetResult();
+            var spans = spansTask.GetAwaiter().GetResult();
 
-            Parallel.ForEach(converter.ConvertAll(spans), (span) => {
-                resultSpans.Add(span);
-            });
+            var resultSpans = new List<ClassificationSpan>( spans.Count() );
+            var converter = new SpansConverter( model, root, snapshot );
+
+            foreach ( var span in converter.ConvertAll(spans) )
+                resultSpans.Add( span );
             return resultSpans;
         }
 
-        private static IList<TItem> EmptyList<TItem>() => Enumerable.Empty<TItem>().ToList();
     }
 }
