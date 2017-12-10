@@ -1,6 +1,7 @@
-﻿// Copyright (c) Stanislav Kuzmich.  All Rights Reserved.
+﻿// Copyright (c) "ESH-Repository" source code contributors. All Rights Reserved.
 // Licensed under the Microsoft Public License (MS-PL).
-// See License.txt in the project for license information.
+// See LICENSE.md in the "ESH-Repository" root for license information.
+// "ESH-Repository" root address: https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Text;
@@ -17,13 +18,13 @@ namespace ASD.ESH.Classification {
         [Import] private IClassificationTypeRegistryService registryService; // set via MEF
 #pragma warning restore CS0649
 
-        IClassifier IClassifierProvider.GetClassifier( ITextBuffer textBuffer ) {
+        IClassifier IClassifierProvider.GetClassifier(ITextBuffer textBuffer) {
+
             return textBuffer.Properties.GetOrCreateSingletonProperty(
                 creator: () => {
-                    TypesRegistry.InitializeIfNeeded( registryService );
+                    TypesRegistry.InitializeIfNeeded(registryService);
                     return new Classifier();
-                }
-            );
+                });
         }
     }
 }

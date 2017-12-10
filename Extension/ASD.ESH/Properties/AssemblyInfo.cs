@@ -1,6 +1,7 @@
-﻿// Copyright (c) Stanislav Kuzmich.  All Rights Reserved.
+﻿// Copyright (c) "ESH-Repository" source code contributors. All Rights Reserved.
 // Licensed under the Microsoft Public License (MS-PL).
-// See License.txt in the project for license information.
+// See LICENSE.md in the "ESH-Repository" root for license information.
+// "ESH-Repository" root address: https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,9 +11,8 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("Art of Software Development")]
 [assembly: AssemblyProduct("Enhanced Syntax Highlighting")]
-[assembly: AssemblyCopyright("Copyright © Stanislav Kuzmich")]
+[assembly: AssemblyCopyright("Copyright © \"ESH-Repository\" source code contributors. All Rights Reserved.")]
 [assembly: AssemblyTrademark("ASD: Enhanced Syntax Highlighting")]
-
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
 

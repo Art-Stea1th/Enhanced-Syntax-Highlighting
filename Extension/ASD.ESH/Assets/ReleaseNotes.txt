@@ -1,4 +1,7 @@
 ﻿- v 1.2 build **** rev. *****
+Fixed: in some cases, the syntax highlighting does not apply completely to the last editing of the code until its next editing.
+
+- v 1.2 build 6551 rev. 38038
 Added: support for Visual Basic.
 
 - v 1.1 build 6547 rev. 73

@@ -1,6 +1,7 @@
-﻿// Copyright (c) Stanislav Kuzmich.  All Rights Reserved.
+﻿// Copyright (c) "ESH-Repository" source code contributors. All Rights Reserved.
 // Licensed under the Microsoft Public License (MS-PL).
-// See License.txt in the project for license information.
+// See LICENSE.md in the "ESH-Repository" root for license information.
+// "ESH-Repository" root address: https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
@@ -16,14 +17,16 @@ namespace ASD.ESH.Classification {
         private static readonly object token = new object();
         private static IClassificationTypeRegistryService registryService = null;
 
-        public static void InitializeIfNeeded( IClassificationTypeRegistryService service ) {
-            if ( service == null )
-                throw new System.ArgumentNullException( nameof(service) );
+        public static void InitializeIfNeeded(IClassificationTypeRegistryService service) {
 
-            if ( registryService == null ) {
-                lock ( token ) {
-                    if ( registryService == null )
+            if (service == null) {
+                throw new System.ArgumentNullException(nameof(service));
+            }
+            if (registryService == null) {
+                lock (token) {
+                    if (registryService == null) {
                         registryService = service;
+                    }
                 }
             }
         }
