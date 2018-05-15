@@ -13,7 +13,6 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 
 namespace ASD.ESH.Classification {
-
     using Helpers;
 
     internal sealed partial class Classifier : IClassifier {
@@ -24,12 +23,11 @@ namespace ASD.ESH.Classification {
 
         private static readonly IList<ClassificationSpan> emptyList = new List<ClassificationSpan>(capacity: 0).AsReadOnly();
 
-        private Document document = null;
-        private ITextSnapshot snapshot = null;
+        private Document document;
+        private ITextSnapshot snapshot;
         private IList<ClassificationSpan> lastSpans = emptyList;
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span) {
-
             var snapshot = span.Snapshot;
             var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
 
@@ -47,7 +45,6 @@ namespace ASD.ESH.Classification {
         }
 
         private async Task<IList<ClassificationSpan>> GetSpansAync(Document document, ITextSnapshot snapshot) {
-
             var modelTask = document.GetSemanticModelAsync();
             var rootTask = document.GetSyntaxRootAsync();
             var spansTask = document.GetClassifiedSpansAsync(new TextSpan(0, snapshot.Length));

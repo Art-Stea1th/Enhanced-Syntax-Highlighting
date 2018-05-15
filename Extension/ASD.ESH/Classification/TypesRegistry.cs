@@ -8,17 +8,14 @@ using Microsoft.CodeAnalysis.Editing;
 using Microsoft.VisualStudio.Text.Classification;
 
 namespace ASD.ESH.Classification {
-
     internal static partial class TypesRegistry {
-
         private const string pT = "ASD-ESH.";         // prefix   type-name
         private const string pF = pT + "Definition."; // prefix format-name
 
         private static readonly object token = new object();
-        private static IClassificationTypeRegistryService registryService = null;
+        private static IClassificationTypeRegistryService registryService;
 
         public static void InitializeIfNeeded(IClassificationTypeRegistryService service) {
-
             if (service == null) {
                 throw new System.ArgumentNullException(nameof(service));
             }
@@ -32,12 +29,10 @@ namespace ASD.ESH.Classification {
         }
 
         public static IClassificationType ResolveType(ISymbol symbol) {
-
             var userTagName = default(string);
             var modifier = DeclarationModifiers.From(symbol);
 
             switch (symbol.Kind) {
-
                 case SymbolKind.Event:
                     userTagName
                         = UserTagName.Event; break;
@@ -76,12 +71,11 @@ namespace ASD.ESH.Classification {
             }
 
             return userTagName != null
-                ? registryService.GetClassificationType($"{pT}{userTagName}")
+                ? registryService.GetClassificationType(pT + userTagName)
                 : null;
         }
 
         private static class UserTagName {
-
             public const string Event = nameof(SymbolKind.Event);
             public const string Field = nameof(SymbolKind.Field);
             public const string FieldConstant = nameof(SymbolKind.Field) + "Constant";
