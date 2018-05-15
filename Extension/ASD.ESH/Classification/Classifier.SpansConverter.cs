@@ -27,7 +27,8 @@ namespace ASD.ESH.Classification {
 
             public IEnumerable<ClassificationSpan> ConvertAll(IEnumerable<ClassifiedSpan> spans) {
                 return spans
-                    .Where(s => s.ClassificationType == ClassificationTypeNames.Identifier)
+                    .Where(s => s.ClassificationType == ClassificationTypeNames.Identifier
+                        || (s.ClassificationType.EndsWith("name") && !s.ClassificationType.StartsWith("xml")))
                     .Select(Convert)
                     .Where(cs => cs != null);
             }
