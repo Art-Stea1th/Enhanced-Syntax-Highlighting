@@ -13,4 +13,4 @@ To change the syntax highlighting settings just go to "**Tools**" > "**Options**
 
 The syntax highlighting options for "**Classes**", "**Delegates**", "**Enums**", "**Interfaces**", "**Modules**", "**Structures**" and "**Type Parameters**" are just below, they have the prefix "**User Types - ...**" and are built-in default.
 
-[![Releases](https://img.shields.io/badge/Releases-All-green.svg?style=flat-square&colorB=9FB861)](https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting/releases) [![v 1.2 build 6554 rev. 24807](https://img.shields.io/badge/v%201.2%20build%206554%20rev.%2024807-Latest-green.svg?style=flat-square&colorB=9FB861)](https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting/releases/tag/1.2.6554.24807)
+[![Releases](https://img.shields.io/badge/Releases-All-green.svg?style=flat-square&colorB=9FB861)](https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting/releases) [![v 1.2 build 6554 rev. 24807](https://img.shields.io/badge/Release-Latest-green.svg?style=flat-square&colorB=9FB861)](https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting/releases/latest)
