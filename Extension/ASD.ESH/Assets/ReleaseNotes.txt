@@ -1,5 +1,8 @@
 ﻿- v 1.2 build **** rev. *****
-Fixed: in some cases, the syntax highlighting does not apply completely to the last editing of the code until its next editing.
+Fixed: Visual Studio 2017 version 15.7 no longer works, thanks 'Spaier' (Pavel Levchuk)
+
+- v 1.2 build 6554 rev. 24807
+Fixed: in some cases, the syntax highlighting does not apply completely to the last editing of the code until its next editing, thanks 'CAT-Solstice'
 
 - v 1.2 build 6551 rev. 38038
 Added: support for Visual Basic.
