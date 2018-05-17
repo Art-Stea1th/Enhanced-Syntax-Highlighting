@@ -15,11 +15,14 @@ using CS = Microsoft.CodeAnalysis.CSharp;
 using VB = Microsoft.CodeAnalysis.VisualBasic;
 
 namespace ASD.ESH.Classification {
+
     internal sealed partial class Classifier {
+
         internal sealed class SpansConverter {
-            private readonly SemanticModel model;
-            private readonly SyntaxNode root;
-            private readonly ITextSnapshot snapshot;
+
+            private SemanticModel model;
+            private SyntaxNode root;
+            private ITextSnapshot snapshot;
 
             public SpansConverter(SemanticModel model, SyntaxNode root, ITextSnapshot snapshot) {
                 this.model = model; this.root = root; this.snapshot = snapshot;
@@ -34,6 +37,7 @@ namespace ASD.ESH.Classification {
             }
 
             private ClassificationSpan Convert(ClassifiedSpan span) {
+
                 var symbol = GetSymbol(span.TextSpan);
                 if (symbol == null) { return null; }
 
@@ -44,6 +48,7 @@ namespace ASD.ESH.Classification {
             }
 
             private ISymbol GetSymbol(TextSpan textSpan) {
+
                 var expressionSyntaxNode = GetExpression(root.FindNode(textSpan));
 
                 return model.GetSymbolInfo(expressionSyntaxNode).Symbol
@@ -51,6 +56,7 @@ namespace ASD.ESH.Classification {
             }
 
             private SyntaxNode GetExpression(SyntaxNode node) {
+
                 switch (node) {
                     case CS.Syntax.ArgumentSyntax s:
                         return s.Expression;
@@ -65,6 +71,7 @@ namespace ASD.ESH.Classification {
 
             private ClassificationSpan CreateSpan(TextSpan span, IClassificationType type)
                 => new ClassificationSpan(new SnapshotSpan(snapshot, new Span(span.Start, span.Length)), type);
+
         }
     }
 }

@@ -10,8 +10,11 @@ using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
 namespace ASD.ESH.Classification {
+
     internal static partial class TypesRegistry {
+
         private sealed class Definitions {
+
             private static class DefaultColor {
                 public const string Blue = "#9CDCFE";
                 public const string Yellow = "#DCDCAA";
@@ -20,7 +23,7 @@ namespace ASD.ESH.Classification {
 
             private const string priority = PredefinedClassificationTypeNames.Identifier;
 
-#pragma warning disable CS0649            
+#pragma warning disable CS0649, IDE1006    
 
             [Export(typeof(ClassificationTypeDefinition)), Name(pT + UserTagName.Event)]
             internal static ClassificationTypeDefinition EventType;
@@ -55,7 +58,7 @@ namespace ASD.ESH.Classification {
             [Export(typeof(ClassificationTypeDefinition)), Name(pT + UserTagName.Property)]
             internal static ClassificationTypeDefinition PropertyType;
 
-#pragma warning restore CS0649
+#pragma warning restore CS0649, IDE1006
 
             [Export(typeof(EditorFormatDefinition)), Name(pF + UserTagName.Event), UserVisible(true)]
             [ClassificationType(ClassificationTypeNames = pT + UserTagName.Event), Order(After = priority)]
@@ -135,11 +138,11 @@ namespace ASD.ESH.Classification {
             }
 
             private abstract class FormatDefinition : ClassificationFormatDefinition {
+
                 public FormatDefinition(string displayName, string defaultForegroundColor) : this(displayName) {
                     ForegroundColor = (Color)ColorConverter
                         .ConvertFromString(defaultForegroundColor);
                 }
-
                 public FormatDefinition(string displayName) {
                     DisplayName = $"User Tags - {displayName}";
                 }
