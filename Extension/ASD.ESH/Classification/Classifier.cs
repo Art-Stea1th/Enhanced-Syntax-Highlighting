@@ -43,10 +43,10 @@ namespace ASD.ESH.Classification {
             this.document = document;
             this.snapshot = snapshot;
 
-            return lastSpans = GetSpansAync(document, snapshot).ConfigureAwait(false).GetAwaiter().GetResult();
+            return lastSpans = GetSpansAsync(document, snapshot).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        private async Task<IList<ClassificationSpan>> GetSpansAync(Document document, ITextSnapshot snapshot) {
+        private async Task<IList<ClassificationSpan>> GetSpansAsync(Document document, ITextSnapshot snapshot) {
 
             var model = await document.GetSemanticModelAsync().ConfigureAwait(false);
             var root = await document.GetSyntaxRootAsync().ConfigureAwait(false);
