@@ -14,9 +14,9 @@ namespace ASD.ESH.Classification {
     [ContentType("CSharp"), ContentType("Basic")]
     internal sealed class ClassifierProvider : IClassifierProvider {
 
-#pragma warning disable CS0649
+#pragma warning disable CS0649, IDE0044, RCS1169
         [Import] private IClassificationTypeRegistryService registryService; // set via MEF
-#pragma warning restore CS0649
+#pragma warning restore CS0649, IDE0044, RCS1169
 
         IClassifier IClassifierProvider.GetClassifier(ITextBuffer textBuffer) {
 
