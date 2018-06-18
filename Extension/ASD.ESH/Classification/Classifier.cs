@@ -48,12 +48,14 @@ namespace ASD.ESH.Classification {
 
         private async Task<IList<ClassificationSpan>> GetSpansAsync(Document document, ITextSnapshot snapshot) {
 
-            var model = await document.GetSemanticModelAsync().ConfigureAwait(false);
-            var root = await document.GetSyntaxRootAsync().ConfigureAwait(false);
-            var spans = await document.GetClassifiedSpansAsync(new TextSpan(0, snapshot.Length)).ConfigureAwait(false);
+            var modelTask = document.GetSemanticModelAsync();
+            var rootTask = document.GetSyntaxRootAsync();
+            var spansTask = document.GetClassifiedSpansAsync(new TextSpan(0, snapshot.Length));
+            await Task.WhenAll(modelTask, rootTask, spansTask).ConfigureAwait(false);
+            var spans = spansTask.Result;
 
             var resultSpans = new List<ClassificationSpan>(spans.Count());
-            var converter = new SpansConverter(model, root, snapshot);
+            var converter = new SpansConverter(modelTask.Result, rootTask.Result, snapshot);
 
             foreach (var span in converter.ConvertAll(spans)) {
                 resultSpans.Add(span);
