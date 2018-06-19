@@ -52,15 +52,8 @@ namespace ASD.ESH.Classification {
             var rootTask = document.GetSyntaxRootAsync();
             var spansTask = document.GetClassifiedSpansAsync(new TextSpan(0, snapshot.Length));
             await Task.WhenAll(modelTask, rootTask, spansTask).ConfigureAwait(false);
-            var spans = spansTask.Result;
-
-            var resultSpans = new List<ClassificationSpan>(spans.Count());
             var converter = new SpansConverter(modelTask.Result, rootTask.Result, snapshot);
-
-            foreach (var span in converter.ConvertAll(spans)) {
-                resultSpans.Add(span);
-            }
-            return resultSpans;
+            return converter.ConvertAll(spansTask.Result).ToList();
         }
     }
 }
