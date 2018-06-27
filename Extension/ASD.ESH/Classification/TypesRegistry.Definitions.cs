@@ -13,7 +13,7 @@ namespace ASD.ESH.Classification {
 
     internal static partial class TypesRegistry {
 
-        private sealed class Definitions {
+        private static class Definitions {
 
             private static class DefaultColor {
                 public const string Blue = "#9CDCFE";
@@ -139,11 +139,12 @@ namespace ASD.ESH.Classification {
 
             private abstract class FormatDefinition : ClassificationFormatDefinition {
 
-                public FormatDefinition(string displayName, string defaultForegroundColor) : this(displayName) {
+                protected FormatDefinition(string displayName, string defaultForegroundColor) : this(displayName) {
                     ForegroundColor = (Color)ColorConverter
                         .ConvertFromString(defaultForegroundColor);
                 }
-                public FormatDefinition(string displayName) {
+
+                protected FormatDefinition(string displayName) {
                     DisplayName = $"User Tags - {displayName}";
                 }
             }

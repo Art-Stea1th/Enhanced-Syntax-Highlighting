@@ -20,9 +20,9 @@ namespace ASD.ESH.Classification {
 
         internal sealed class SpansConverter {
 
-            private SemanticModel model;
-            private SyntaxNode root;
-            private ITextSnapshot snapshot;
+            private readonly SemanticModel model;
+            private readonly SyntaxNode root;
+            private readonly ITextSnapshot snapshot;
 
             public SpansConverter(SemanticModel model, SyntaxNode root, ITextSnapshot snapshot) {
                 this.model = model; this.root = root; this.snapshot = snapshot;
@@ -30,6 +30,7 @@ namespace ASD.ESH.Classification {
 
             public IEnumerable<ClassificationSpan> ConvertAll(IEnumerable<ClassifiedSpan> spans) {
                 return spans
+                    .AsParallel()
                     .Where(s => s.ClassificationType == ClassificationTypeNames.Identifier
                         || (s.ClassificationType.EndsWith("name") && !s.ClassificationType.StartsWith("xml")))
                     .Select(Convert)
