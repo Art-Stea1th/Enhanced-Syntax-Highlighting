@@ -3,6 +3,7 @@
 // See LICENSE.md in the "ESH-Repository" root for license information.
 // "ESH-Repository" root address: https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting
 
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.VisualStudio.Text.Classification;
@@ -34,7 +35,15 @@ namespace ASD.ESH.Classification {
         public static IClassificationType ResolveType(ISymbol symbol) {
 
             var userTagName = default(string);
-            var modifier = DeclarationModifiers.From(symbol);
+            DeclarationModifiers modifier;
+            try
+            {
+                modifier = DeclarationModifiers.From(symbol);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
 
             switch (symbol.Kind) {
 
