@@ -3,7 +3,6 @@
 // See LICENSE.md in the "ESH-Repository" root for license information.
 // "ESH-Repository" root address: https://github.com/Art-Stea1th/Enhanced-Syntax-Highlighting
 
-using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.VisualStudio.Text.Classification;
