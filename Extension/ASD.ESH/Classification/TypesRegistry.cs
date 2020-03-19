@@ -35,15 +35,8 @@ namespace ASD.ESH.Classification {
         public static IClassificationType ResolveType(ISymbol symbol) {
 
             var userTagName = default(string);
-            DeclarationModifiers modifier;
-            try
-            {
-                modifier = DeclarationModifiers.From(symbol);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+
+            var modifier = symbol is INamespaceSymbol ? DeclarationModifiers.None : DeclarationModifiers.From(symbol);
 
             switch (symbol.Kind) {
 
