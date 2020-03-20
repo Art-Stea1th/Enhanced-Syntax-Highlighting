@@ -35,7 +35,7 @@ namespace ASD.ESH.Classification {
 
             var userTagName = default(string);
 
-            var modifier = symbol is INamespaceSymbol ? DeclarationModifiers.None : DeclarationModifiers.From(symbol);
+            var modifier = symbol is INamespaceSymbol || symbol is ILocalSymbol ? DeclarationModifiers.None : DeclarationModifiers.From(symbol);
 
             switch (symbol.Kind) {
 
